@@ -1,4 +1,4 @@
-import asyncio
+\import asyncio
 import os
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import CommandStart
@@ -26,28 +26,77 @@ car_photos = {
     "R35": "r35.jpg"
 }
 
-# --- ИСТОРИЯ ---
+# --- 📜 ПОДРОБНАЯ ИСТОРИЯ ---
 history = {
-    "R32": "🏎 R32 GT-R\n\nЛегендарная 'Godzilla'. Доминировала в JTCC.",
-    "R33": "🏎 R33 GT-R\n\nСтабильность, Nürburgring < 8 минут.",
-    "R34": "🏎 R34 GT-R\n\nИкона JDM и Fast & Furious.",
-    "R35": "🏎 R35 GT-R\n\nСовременный суперкар."
+    "R32": (
+        "🏎 Nissan Skyline GT-R R32 (1989–1994)\n\n"
+        "📌 Контекст:\n"
+        "R32 стал возрождением легендарной серии GT-R после долгого перерыва. "
+        "Модель создавалась с конкретной целью — доминировать в автоспорте.\n\n"
+        "🏁 Достижения:\n"
+        "• 29 побед подряд в JTCC\n"
+        "• фактически не имел конкурентов\n\n"
+        "🔧 Технологии:\n"
+        "• ATTESA E-TS\n"
+        "• RB26DETT\n"
+        "• HICAS\n\n"
+        "👑 Итог:\n"
+        "Прозвище 'Godzilla'"
+    ),
+
+    "R33": (
+        "🏎 Nissan Skyline GT-R R33 (1995–1998)\n\n"
+        "📌 Контекст:\n"
+        "Развитие R32 с упором на стабильность.\n\n"
+        "🏁 Достижения:\n"
+        "• Nürburgring < 8 минут\n\n"
+        "🔧 Технологии:\n"
+        "• ATTESA E-TS Pro\n"
+        "• улучшенная подвеска\n\n"
+        "👑 Итог:\n"
+        "Самый стабильный Skyline"
+    ),
+
+    "R34": (
+        "🏎 Nissan Skyline GT-R R34 (1999–2002)\n\n"
+        "📌 Контекст:\n"
+        "Финальная версия Skyline.\n\n"
+        "🏁 Достижения:\n"
+        "• культовый статус\n\n"
+        "🔧 Технологии:\n"
+        "• дисплей телеметрии\n\n"
+        "👑 Итог:\n"
+        "Икона JDM"
+    ),
+
+    "R35": (
+        "🏎 Nissan GT-R R35 (2007–)\n\n"
+        "📌 Контекст:\n"
+        "Отдельная модель GT-R.\n\n"
+        "🏁 Достижения:\n"
+        "• конкурирует с Ferrari\n\n"
+        "🔧 Технологии:\n"
+        "• VR38DETT\n"
+        "• полный привод\n\n"
+        "👑 Итог:\n"
+        "Современный суперкар"
+    )
 }
 
-# --- ХАРАКТЕРИСТИКИ ---
+# --- ⚙️ ХАРАКТЕРИСТИКИ ---
 specs = {
-    "R32": {"engine": "RB26DETT", "power": "280 л.с.", "0-100": "5.5 сек"},
-    "R33": {"engine": "RB26DETT", "power": "280 л.с.", "0-100": "5.4 сек"},
-    "R34": {"engine": "RB26DETT", "power": "280 л.с.", "0-100": "4.9 сек"},
-    "R35": {"engine": "VR38DETT", "power": "480–600+ л.с.", "0-100": "2.7–3.5 сек"}
+    "R32": {"text": "🏎 R32\n💪 280 л.с.\n⚡ 5.5 сек"},
+    "R33": {"text": "🏎 R33\n💪 280 л.с.\n⚡ 5.4 сек"},
+    "R34": {"text": "🏎 R34\n💪 280 л.с.\n⚡ 4.9 сек"},
+    "R35": {"text": "🏎 R35\n💪 480+ л.с.\n⚡ 3 сек"}
 }
 
 # --- ФАКТЫ ---
 car_facts = {
-    "R32": ["29 побед подряд", "Godzilla", "1000+ л.с. потенциал"],
-    "R33": ["<8 мин Nürburgring", "ATTESA Pro", "самый стабильный"],
-    "R34": ["Fast & Furious", "экран телеметрии", "JDM легенда"],
-    "R35": ["ручная сборка", "конкурент Ferrari", "<3 сек разгон"]
+    "R32": ["29 побед подряд", "Godzilla", "1000+ л.с."],
+    "R33": ["<8 мин Nürburgring", "ATTESA Pro", "стабильность"],
+    "R34": ["Fast & Furious", "телеметрия", "JDM"],
+    "R35": ["ручная сборка", "суперкар", "<3 сек"]
 }
 
 # --- МЕНЮ ---
@@ -62,7 +111,7 @@ def car_menu(index):
     return InlineKeyboardMarkup(inline_keyboard=[
         [
             InlineKeyboardButton(text="⬅️", callback_data=f"car_{index-1}"),
-            InlineKeyboardButton(text=f"{model} • {index+1}/{len(models)}", callback_data="noop"),
+            InlineKeyboardButton(text=f"{model}", callback_data="noop"),
             InlineKeyboardButton(text="➡️", callback_data=f"car_{index+1}")
         ],
         [
@@ -71,9 +120,6 @@ def car_menu(index):
         ],
         [
             InlineKeyboardButton(text="🔥 Факты", callback_data=f"{model}_facts")
-        ],
-        [
-            InlineKeyboardButton(text="⬅️ Меню", callback_data="back")
         ]
     ])
 
@@ -86,7 +132,7 @@ def car_facts_menu(model, index):
             InlineKeyboardButton(text="➡️", callback_data=f"carfact_{model}_{index+1}")
         ],
         [
-            InlineKeyboardButton(text="⬅️ Назад", callback_data=f"car_{models.index(model)}")
+            InlineKeyboardButton(text="⬅️ Назад", callback_data=f"cars")
         ]
     ])
 
@@ -101,26 +147,16 @@ async def cb(callback: types.CallbackQuery):
     await callback.answer()
     data = callback.data
 
-    if data == "back":
-        await callback.message.edit_text("🚀 Главное меню", reply_markup=main_menu())
-
-    elif data == "cars":
-        index = 0
-        model = models[index]
+    if data == "cars":
+        model = models[0]
         media = InputMediaPhoto(
             media=FSInputFile(car_photos[model]),
             caption=f"🏎 {model}"
         )
-        await callback.message.edit_media(media, reply_markup=car_menu(index))
+        await callback.message.edit_media(media, reply_markup=car_menu(0))
 
     elif data.startswith("car_"):
-        index = int(data.split("_")[1])
-
-        if index < 0:
-            index = len(models) - 1
-        elif index >= len(models):
-            index = 0
-
+        index = int(data.split("_")[1]) % len(models)
         model = models[index]
         media = InputMediaPhoto(
             media=FSInputFile(car_photos[model]),
@@ -131,58 +167,21 @@ async def cb(callback: types.CallbackQuery):
     elif "_history" in data:
         model = data.split("_")[0]
         await callback.message.edit_caption(
-            caption=history[model],
-            reply_markup=InlineKeyboardMarkup(inline_keyboard=[
-                [InlineKeyboardButton(text="⬅️ Назад", callback_data=f"car_{models.index(model)}")]
-            ])
+            caption=history[model]
         )
 
     elif "_specs" in data:
         model = data.split("_")[0]
-        s = specs[model]
-
-        text = (
-            f"🏎 {model}\n\n"
-            f"⚙️ {s['engine']}\n"
-            f"💪 {s['power']}\n"
-            f"⚡ {s['0-100']}"
-        )
-
         await callback.message.edit_caption(
-            caption=text,
-            reply_markup=InlineKeyboardMarkup(inline_keyboard=[
-                [InlineKeyboardButton(text="⬅️ Назад", callback_data=f"car_{models.index(model)}")]
-            ])
+            caption=specs[model]["text"]
         )
 
     elif "_facts" in data:
         model = data.split("_")[0]
         await callback.message.edit_caption(
-            caption=f"🔥 {car_facts[model][0]}",
+            caption=car_facts[model][0],
             reply_markup=car_facts_menu(model, 0)
         )
-
-    elif data.startswith("carfact_"):
-        _, model, index = data.split("_")
-        index = int(index)
-
-        facts = car_facts[model]
-
-        if index < 0:
-            index = len(facts) - 1
-        elif index >= len(facts):
-            index = 0
-
-        await callback.message.edit_caption(
-            caption=f"🔥 {facts[index]}",
-            reply_markup=car_facts_menu(model, index)
-        )
-
-    elif data == "compare":
-        await callback.message.edit_text("⚖️ Выбери машины для сравнения (скоро улучшим 👇)", reply_markup=main_menu())
-
-    elif data == "noop":
-        pass
 
 # --- ЗАПУСК ---
 async def main():
