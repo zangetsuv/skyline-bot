@@ -298,7 +298,7 @@ async def cb(callback: types.CallbackQuery):
             ])
         )
 
- elif data.startswith("c2_"):
+elif data.startswith("c2_"):
     m2 = data.split("_")[1]
     m1 = compare_state.get(callback.from_user.id)
 
