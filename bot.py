@@ -308,3 +308,10 @@ async def cb(callback: types.CallbackQuery):
                 [InlineKeyboardButton(text="🏠 В меню", callback_data="back")]
         ])
     )
+# --- ЗАПУСК ---
+async def main():
+    print("✅ Бот запущен")
+    await dp.start_polling(bot)
+
+if __name__ == "__main__":
+    asyncio.run(main())
