@@ -8,7 +8,7 @@ from aiogram.types import (
 )
 
 # --- 🔐 ТОКЕН ---
-TOKEN = os.getenv("8285484329:AAGmSRXSeUvgqhDljq-TxOK6dSBx7p6FKPw")
+TOKEN = os.environ.get("BOT_TOKEN")
 
 if not TOKEN:
     raise ValueError("❌ BOT_TOKEN не найден! Добавь его в Railway Variables")
