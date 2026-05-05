@@ -298,18 +298,13 @@ async def cb(callback: types.CallbackQuery):
             ])
         )
 
-    elif data.startswith("c2_"):
-        m2 = data.split("_")[1]
-        m1 = compare_state.get(callback.from_user.id)
+ elif data.startswith("c2_"):
+    m2 = data.split("_")[1]
+    m1 = compare_state.get(callback.from_user.id)
 
-        await callback.message.edit_caption(
-            caption=f"{m1} vs {m2}\n\n{specs[m1]['text']}\n\n🆚\n\n{specs[m2]['text']}",
-            reply_markup=InlineKeyboardMarkup(inline_keyboard=[
-                [InlineKeyboardButton(text="🏠 В меню", callback_data="back")]
-# --- ЗАПУСК ---
-async def main():
-    print("✅ Бот запущен")
-    await dp.start_polling(bot)
-
-if __name__ == "__main__":
-    asyncio.run(main())
+    await callback.message.edit_caption(
+        caption=f"{m1} vs {m2}\n\n{specs[m1]['text']}\n\n🆚\n\n{specs[m2]['text']}",
+        reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="🏠 В меню", callback_data="back")]
+        ])
+    )
