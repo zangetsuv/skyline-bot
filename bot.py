@@ -22,140 +22,42 @@ car_photos = {
     "R32": "r32.jpg",
     "R33": "r33.jpg",
     "R34": "r34.jpg",
-    "R35": "r35.jpg"
+    "R35": "r35.jpg",
+    "menu": "gtr.jpg"
 }
 
-# --- ИСТОРИЯ (сокращена чтобы влезала) ---
+# --- УМНОЕ РЕДАКТИРОВАНИЕ ---
+async def smart_edit(message, text, reply_markup):
+    try:
+        if message.photo:
+            await message.edit_caption(caption=text, reply_markup=reply_markup)
+        else:
+            await message.edit_text(text=text, reply_markup=reply_markup)
+    except:
+        await message.answer(text, reply_markup=reply_markup)
+
+# --- ИСТОРИЯ ---
 history = {
-    "R32": (
-        "🏎 R32 GT-R (1989–1994)\n\n"
-        "Возрождение GT-R как машины для автоспорта.\n"
-        "Создавался под гонки Group A.\n\n"
-        "🏁 29 побед подряд в JTCC\n"
-        "🔧 RB26DETT + ATTESA E-TS + HICAS\n\n"
-        "⚙️ Реальная мощность выше 280 л.с.\n\n"
-        "👑 Godzilla — легенда автоспорта"
-    ),
-
-    "R33": (
-        "🏎 R33 GT-R (1995–1998)\n\n"
-        "Эволюция R32 с упором на стабильность.\n"
-        "Больше, тяжелее, но управляемее.\n\n"
-        "🏁 Nürburgring < 8 минут\n"
-        "🔧 ATTESA E-TS Pro\n\n"
-        "⚙️ Быстрее R32 на треке\n\n"
-        "👑 Самый стабильный Skyline"
-    ),
-
-    "R34": (
-        "🏎 R34 GT-R (1999–2002)\n\n"
-        "Финальная версия Skyline GT-R.\n"
-        "Компактнее и технологичнее.\n\n"
-        "🏁 Культовый статус + Fast & Furious\n"
-        "🔧 Телеметрия + полный привод\n\n"
-        "⚙️ Один из первых авто с дисплеем данных\n\n"
-        "👑 Икона JDM"
-    ),
-
-    "R35": (
-        "🏎 GT-R R35 (2007–)\n\n"
-        "Полностью новая модель GT-R.\n"
-        "Отделён от Skyline.\n\n"
-        "🏁 Конкурирует с суперкарами\n"
-        "🔧 VR38DETT + AWD + робот\n\n"
-        "⚙️ Рекорды Nürburgring\n\n"
-        "👑 Современный суперкар"
-    )
+    "R32": "🏎 R32 GT-R\n29 побед подряд, Godzilla, RB26DETT",
+    "R33": "🏎 R33 GT-R\n<8 мин Nürburgring, стабильность",
+    "R34": "🏎 R34 GT-R\nJDM икона, телеметрия",
+    "R35": "🏎 R35 GT-R\nсуперкар, Takumi, VR38DETT"
 }
 
 # --- ХАРАКТЕРИСТИКИ ---
 specs = {
-    "R32": {
-        "text": (
-            "🏎 R32 GT-R\n\n"
-            "⚙️ RB26DETT (2.6L twin-turbo)\n"
-            "💪 280+ л.с.\n"
-            "🧠 AWD (ATTESA E-TS)\n"
-            "🔧 5MT\n"
-            "⚡ 0–100: ~5.5 сек\n"
-            "🏁 ~250 км/ч\n"
-            "⚖️ ~1430 кг"
-        )
-    },
-
-    "R33": {
-        "text": (
-            "🏎 R33 GT-R\n\n"
-            "⚙️ RB26DETT\n"
-            "💪 280 л.с.\n"
-            "🧠 AWD (ATTESA Pro)\n"
-            "🔧 5MT\n"
-            "⚡ ~5.4 сек\n"
-            "🏁 ~250 км/ч\n"
-            "⚖️ ~1540 кг"
-        )
-    },
-
-    "R34": {
-        "text": (
-            "🏎 R34 GT-R\n\n"
-            "⚙️ RB26DETT\n"
-            "💪 280 л.с.\n"
-            "🧠 AWD\n"
-            "🔧 6MT\n"
-            "⚡ ~4.9 сек\n"
-            "🏁 ~250 км/ч\n"
-            "🖥 Телеметрия"
-        )
-    },
-
-    "R35": {
-        "text": (
-            "🏎 GT-R R35\n\n"
-            "⚙️ VR38DETT (3.8L V6)\n"
-            "💪 480–600+ л.с.\n"
-            "🧠 AWD\n"
-            "🔧 робот\n"
-            "⚡ 2.7–3.5 сек\n"
-            "🏁 ~315 км/ч\n"
-            "🧑‍🔧 Takumi"
-        )
-    }
+    "R32": {"text": "R32\n280+ л.с.\n0-100: 5.5 сек"},
+    "R33": {"text": "R33\n280 л.с.\n0-100: 5.4 сек"},
+    "R34": {"text": "R34\n280 л.с.\n0-100: 4.9 сек"},
+    "R35": {"text": "R35\n480+ л.с.\n0-100: ~3 сек"}
 }
 
 # --- ФАКТЫ ---
 car_facts = {
-    "R32": [
-        "🏁 29 побед подряд — абсолютное доминирование",
-        "👾 Прозвище Godzilla из Австралии",
-        "⚙️ Мощность была занижена",
-        "🔧 Тюнинг до 1000+ л.с.",
-        "🧠 Умный полный привод"
-    ],
-
-    "R33": [
-        "🏁 <8 мин Nürburgring",
-        "⚖️ Быстрее R32 на треке",
-        "🔧 Версия LM для Ле-Мана",
-        "🧠 Улучшенный полный привод",
-        "📊 Самый недооценённый GT-R"
-    ],
-
-    "R34": [
-        "🎬 Икона после Fast & Furious",
-        "🖥 Дисплей телеметрии",
-        "🔥 V-Spec II — редкий",
-        "💰 Очень дорогой сейчас",
-        "🧠 Отличный баланс"
-    ],
-
-    "R35": [
-        "🧑‍🔧 Двигатель собирает Takumi",
-        "🚀 Быстрее многих суперкаров",
-        "🏁 Рекорды Nürburgring",
-        "💻 Полностью электронный",
-        "🔥 Мощность выросла до 600+"
-    ]
+    "R32": ["29 побед подряд", "Godzilla", "1000+ л.с."],
+    "R33": ["<8 мин Nürburgring", "стабильность", "ATTESA"],
+    "R34": ["Fast & Furious", "телеметрия", "JDM легенда"],
+    "R35": ["Takumi сборка", "суперкар", "очень быстрый"]
 }
 
 # --- МЕНЮ ---
@@ -205,7 +107,7 @@ def facts_menu(model, index):
 @dp.message(CommandStart())
 async def start(message: types.Message):
     await message.answer_photo(
-        FSInputFile(car_photos["R32"]),
+        FSInputFile(car_photos["menu"]),
         caption="🚀 Главное меню",
         reply_markup=main_menu()
     )
@@ -217,8 +119,11 @@ async def cb(callback: types.CallbackQuery):
     data = callback.data
 
     if data == "back":
-        await callback.message.edit_caption(
-            caption="🚀 Главное меню",
+        await callback.message.edit_media(
+            InputMediaPhoto(
+                media=FSInputFile(car_photos["menu"]),
+                caption="🚀 Главное меню"
+            ),
             reply_markup=main_menu()
         )
 
@@ -239,9 +144,10 @@ async def cb(callback: types.CallbackQuery):
 
     elif "_history" in data:
         model = data.split("_")[0]
-        await callback.message.edit_caption(
-            caption=history[model],
-            reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+        await smart_edit(
+            callback.message,
+            history[model],
+            InlineKeyboardMarkup(inline_keyboard=[
                 [InlineKeyboardButton(text="⬅️ Назад", callback_data=f"car_{models.index(model)}")],
                 [InlineKeyboardButton(text="🏠 В меню", callback_data="back")]
             ])
@@ -249,9 +155,10 @@ async def cb(callback: types.CallbackQuery):
 
     elif "_specs" in data:
         model = data.split("_")[0]
-        await callback.message.edit_caption(
-            caption=specs[model]["text"],
-            reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+        await smart_edit(
+            callback.message,
+            specs[model]["text"],
+            InlineKeyboardMarkup(inline_keyboard=[
                 [InlineKeyboardButton(text="⬅️ Назад", callback_data=f"car_{models.index(model)}")],
                 [InlineKeyboardButton(text="🏠 В меню", callback_data="back")]
             ])
@@ -259,10 +166,7 @@ async def cb(callback: types.CallbackQuery):
 
     elif "_facts" in data:
         model = data.split("_")[0]
-        await callback.message.edit_caption(
-            caption=car_facts[model][0],
-            reply_markup=facts_menu(model, 0)
-        )
+        await smart_edit(callback.message, car_facts[model][0], facts_menu(model, 0))
 
     elif data.startswith("fact_"):
         _, model, index = data.split("_")
@@ -274,15 +178,13 @@ async def cb(callback: types.CallbackQuery):
         elif index >= len(facts):
             index = 0
 
-        await callback.message.edit_caption(
-            caption=facts[index],
-            reply_markup=facts_menu(model, index)
-        )
+        await smart_edit(callback.message, facts[index], facts_menu(model, index))
 
     elif data == "compare":
-        await callback.message.edit_caption(
-            caption="⚖️ Выбери первую машину",
-            reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+        await smart_edit(
+            callback.message,
+            "⚖️ Выбери первую машину",
+            InlineKeyboardMarkup(inline_keyboard=[
                 [InlineKeyboardButton(text=m, callback_data=f"c1_{m}") for m in models]
             ])
         )
@@ -291,9 +193,10 @@ async def cb(callback: types.CallbackQuery):
         m1 = data.split("_")[1]
         compare_state[callback.from_user.id] = m1
 
-        await callback.message.edit_caption(
-            caption=f"Первая: {m1}\nВыбери вторую",
-            reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+        await smart_edit(
+            callback.message,
+            f"Первая: {m1}\nВыбери вторую",
+            InlineKeyboardMarkup(inline_keyboard=[
                 [InlineKeyboardButton(text=m, callback_data=f"c2_{m}") for m in models]
             ])
         )
@@ -302,12 +205,14 @@ async def cb(callback: types.CallbackQuery):
         m2 = data.split("_")[1]
         m1 = compare_state.get(callback.from_user.id)
 
-        await callback.message.edit_caption(
-            caption=f"{m1} vs {m2}\n\n{specs[m1]['text']}\n\n🆚\n\n{specs[m2]['text']}",
-            reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+        await smart_edit(
+            callback.message,
+            f"{m1} vs {m2}\n\n{specs[m1]['text']}\n\n🆚\n\n{specs[m2]['text']}",
+            InlineKeyboardMarkup(inline_keyboard=[
                 [InlineKeyboardButton(text="🏠 В меню", callback_data="back")]
-        ])
-    )
+            ])
+        )
+
 # --- ЗАПУСК ---
 async def main():
     print("✅ Бот запущен")
