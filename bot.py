@@ -7,7 +7,6 @@ from aiogram.types import (
     FSInputFile, InputMediaPhoto
 )
 
-# --- 🔐 ТОКЕН ---
 TOKEN = os.environ.get("BOT_TOKEN")
 
 if not TOKEN:
@@ -18,7 +17,6 @@ dp = Dispatcher()
 
 models = ["R32", "R33", "R34", "R35"]
 
-# --- ФОТО ---
 car_photos = {
     "R32": "r32.jpg",
     "R33": "r33.jpg",
@@ -31,28 +29,32 @@ history = {
     "R32": (
         "🏎 Nissan Skyline GT-R R32 (1989–1994)\n\n"
         "📌 Контекст:\n"
-        "R32 стал возрождением легендарной серии GT-R после долгого перерыва. "
-        "Модель создавалась с конкретной целью — доминировать в автоспорте.\n\n"
+        "После прекращения GT-R в 1970-х Nissan решил вернуть легенду как оружие для автоспорта.\n\n"
         "🏁 Достижения:\n"
         "• 29 побед подряд в JTCC\n"
-        "• фактически не имел конкурентов\n\n"
-        "🔧 Технологии:\n"
+        "• доминирование в гонках\n\n"
+        "🔧 Инженерия:\n"
         "• ATTESA E-TS\n"
         "• RB26DETT\n"
         "• HICAS\n\n"
+        "⚙️ Факт:\n"
+        "Мощность была занижена (реально больше 280 л.с.)\n\n"
         "👑 Итог:\n"
-        "Прозвище 'Godzilla'"
+        "Godzilla — легенда автоспорта"
     ),
 
     "R33": (
         "🏎 Nissan Skyline GT-R R33 (1995–1998)\n\n"
         "📌 Контекст:\n"
-        "Развитие R32 с упором на стабильность.\n\n"
+        "Эволюция R32 с упором на стабильность и контроль.\n\n"
         "🏁 Достижения:\n"
         "• Nürburgring < 8 минут\n\n"
-        "🔧 Технологии:\n"
+        "🔧 Инженерия:\n"
         "• ATTESA E-TS Pro\n"
-        "• улучшенная подвеска\n\n"
+        "• улучшенная подвеска\n"
+        "• усиленный кузов\n\n"
+        "⚙️ Факт:\n"
+        "Несмотря на вес, быстрее R32 на треке\n\n"
         "👑 Итог:\n"
         "Самый стабильный Skyline"
     ),
@@ -60,11 +62,15 @@ history = {
     "R34": (
         "🏎 Nissan Skyline GT-R R34 (1999–2002)\n\n"
         "📌 Контекст:\n"
-        "Финальная версия Skyline.\n\n"
+        "Финальная эволюция Skyline GT-R.\n\n"
         "🏁 Достижения:\n"
-        "• культовый статус\n\n"
-        "🔧 Технологии:\n"
-        "• дисплей телеметрии\n\n"
+        "• культовый статус\n"
+        "• популярность благодаря Fast & Furious\n\n"
+        "🔧 Инженерия:\n"
+        "• дисплей телеметрии\n"
+        "• улучшенный полный привод\n\n"
+        "⚙️ Факт:\n"
+        "Один из первых авто с телеметрией\n\n"
         "👑 Итог:\n"
         "Икона JDM"
     ),
@@ -72,31 +78,116 @@ history = {
     "R35": (
         "🏎 Nissan GT-R R35 (2007–)\n\n"
         "📌 Контекст:\n"
-        "Отдельная модель GT-R.\n\n"
+        "Полностью новая модель GT-R.\n\n"
         "🏁 Достижения:\n"
-        "• конкурирует с Ferrari\n\n"
-        "🔧 Технологии:\n"
+        "• конкурирует с суперкарами\n"
+        "• рекорды Nürburgring\n\n"
+        "🔧 Инженерия:\n"
         "• VR38DETT\n"
-        "• полный привод\n\n"
+        "• полный привод\n"
+        "• роботизированная коробка\n\n"
+        "⚙️ Факт:\n"
+        "Быстрее многих суперкаров\n\n"
         "👑 Итог:\n"
-        "Современный суперкар"
+        "Современный технологичный суперкар"
     )
 }
 
 # --- ⚙️ ХАРАКТЕРИСТИКИ ---
 specs = {
-    "R32": {"text": "🏎 R32\n💪 280 л.с.\n⚡ 5.5 сек"},
-    "R33": {"text": "🏎 R33\n💪 280 л.с.\n⚡ 5.4 сек"},
-    "R34": {"text": "🏎 R34\n💪 280 л.с.\n⚡ 4.9 сек"},
-    "R35": {"text": "🏎 R35\n💪 480+ л.с.\n⚡ 3 сек"}
-}
+    "R32": {
+        "text": (
+            "🏎 Nissan Skyline GT-R R32\n\n"
+            "⚙️ Двигатель: RB26DETT (2.6L, рядный 6, twin-turbo)\n"
+            "💪 Мощность: 280 л.с. (реально 300+)\n"
+            "🧠 Привод: полный (ATTESA E-TS)\n"
+            "🔧 Коробка: 5-ступенчатая механика\n"
+            "⚡ 0–100 км/ч: ~5.5 сек\n"
+            "🏁 Макс. скорость: ~250 км/ч (ограничена)\n"
+            "⚖️ Вес: ~1430 кг\n"
+            "🔥 Тюнинг: потенциал 1000+ л.с.\n"
+            "🛠 Особенности: HICAS (подруливание задних колёс)"
+        )
+    },
 
+    "R33": {
+        "text": (
+            "🏎 Nissan Skyline GT-R R33\n\n"
+            "⚙️ Двигатель: RB26DETT (2.6L twin-turbo)\n"
+            "💪 Мощность: 280 л.с.\n"
+            "🧠 Привод: полный (ATTESA E-TS Pro)\n"
+            "🔧 Коробка: 5-ступенчатая механика\n"
+            "⚡ 0–100 км/ч: ~5.4 сек\n"
+            "🏁 Макс. скорость: ~250 км/ч\n"
+            "⚖️ Вес: ~1540 кг\n"
+            "📊 Управляемость: лучше баланс и стабильность\n"
+            "🛠 Особенности: улучшенная подвеска и охлаждение"
+        )
+    },
+
+    "R34": {
+        "text": (
+            "🏎 Nissan Skyline GT-R R34\n\n"
+            "⚙️ Двигатель: RB26DETT (2.6L twin-turbo)\n"
+            "💪 Мощность: 280 л.с.\n"
+            "🧠 Привод: полный (ATTESA E-TS Pro)\n"
+            "🔧 Коробка: 6-ступенчатая механика\n"
+            "⚡ 0–100 км/ч: ~4.9 сек\n"
+            "🏁 Макс. скорость: ~250 км/ч\n"
+            "⚖️ Вес: ~1560 кг\n"
+            "🖥 Особенность: экран телеметрии\n"
+            "🔥 Статус: одна из самых желанных машин в мире"
+        )
+    },
+
+    "R35": {
+        "text": (
+            "🏎 Nissan GT-R R35\n\n"
+            "⚙️ Двигатель: VR38DETT (3.8L V6 twin-turbo)\n"
+            "💪 Мощность: 480–600+ л.с.\n"
+            "🧠 Привод: полный\n"
+            "🔧 Коробка: роботизированная (6-ступенчатая)\n"
+            "⚡ 0–100 км/ч: 2.7–3.5 сек\n"
+            "🏁 Макс. скорость: ~315 км/ч\n"
+            "⚖️ Вес: ~1750 кг\n"
+            "🧑‍🔧 Сборка: каждый двигатель собирается вручную (Takumi)\n"
+            "🚀 Класс: полноценный суперкар"
+        )
+    }
+}
 # --- ФАКТЫ ---
 car_facts = {
-    "R32": ["29 побед подряд", "Godzilla", "1000+ л.с."],
-    "R33": ["<8 мин Nürburgring", "ATTESA Pro", "стабильность"],
-    "R34": ["Fast & Furious", "телеметрия", "JDM"],
-    "R35": ["ручная сборка", "суперкар", "<3 сек"]
+    "R32": [
+        "🏁 R32 выиграл 29 гонок подряд в JTCC — абсолютное доминирование без шансов для соперников.",
+        "👾 Прозвище 'Godzilla' появилось в Австралии после разгрома местных команд.",
+        "⚙️ RB26DETT официально 280 л.с., но фактически выдавал больше — это было частью джентльменского соглашения.",
+        "🔧 Многие R32 спокойно разгоняются до 1000+ л.с. при тюнинге.",
+        "🧠 ATTESA E-TS могла перераспределять момент между осями за доли секунды."
+    ],
+
+    "R33": [
+        "🏁 R33 стал первым серийным авто быстрее 8 минут на Nürburgring.",
+        "⚖️ Несмотря на больший вес, на треке он быстрее R32 благодаря стабильности.",
+        "🔧 Версия LM создавалась для Ле-Мана и имеет уникальный дизайн.",
+        "🧠 ATTESA E-TS Pro умела распределять тягу даже между задними колёсами.",
+        "📊 Считается самым недооценённым GT-R среди всех поколений."
+    ],
+
+    "R34": [
+        "🎬 Стал мировой иконой после фильма Fast & Furious.",
+        "🖥 Один из первых авто с экраном телеметрии (давление турбин, перегрузки и т.д.).",
+        "🔥 Версия V-Spec II считается одной из самых редких и ценных.",
+        "💰 Сейчас цена на R34 может превышать сотни тысяч долларов.",
+        "🧠 Очень любим в дрифте и тайм-аттаке за баланс и контроль."
+    ],
+
+    "R35": [
+        "🧑‍🔧 Каждый двигатель собирается вручную мастером Takumi.",
+        "🚀 Разгон быстрее многих суперкаров, стоящих в 2–3 раза дороже.",
+        "🏁 GT-R регулярно устанавливал рекорды на Nürburgring.",
+        "💻 Управление полностью электронное — от подвески до распределения тяги.",
+        "🔥 За годы выпуска мощность выросла с ~480 до 600+ л.с."
+    ]
 }
 
 # --- МЕНЮ ---
@@ -120,6 +211,9 @@ def car_menu(index):
         ],
         [
             InlineKeyboardButton(text="🔥 Факты", callback_data=f"{model}_facts")
+        ],
+        [
+            InlineKeyboardButton(text="🏠 В меню", callback_data="back")
         ]
     ])
 
@@ -132,7 +226,10 @@ def car_facts_menu(model, index):
             InlineKeyboardButton(text="➡️", callback_data=f"carfact_{model}_{index+1}")
         ],
         [
-            InlineKeyboardButton(text="⬅️ Назад", callback_data=f"cars")
+            InlineKeyboardButton(text="⬅️ К машине", callback_data=f"car_{models.index(model)}")
+        ],
+        [
+            InlineKeyboardButton(text="🏠 В меню", callback_data="back")
         ]
     ])
 
@@ -147,33 +244,42 @@ async def cb(callback: types.CallbackQuery):
     await callback.answer()
     data = callback.data
 
-    if data == "cars":
+    if data == "back":
+        await callback.message.edit_text("🚀 Главное меню", reply_markup=main_menu())
+
+    elif data == "cars":
         model = models[0]
-        media = InputMediaPhoto(
-            media=FSInputFile(car_photos[model]),
-            caption=f"🏎 {model}"
+        await callback.message.edit_media(
+            InputMediaPhoto(media=FSInputFile(car_photos[model]), caption=f"🏎 {model}"),
+            reply_markup=car_menu(0)
         )
-        await callback.message.edit_media(media, reply_markup=car_menu(0))
 
     elif data.startswith("car_"):
         index = int(data.split("_")[1]) % len(models)
         model = models[index]
-        media = InputMediaPhoto(
-            media=FSInputFile(car_photos[model]),
-            caption=f"🏎 {model}"
+        await callback.message.edit_media(
+            InputMediaPhoto(media=FSInputFile(car_photos[model]), caption=f"🏎 {model}"),
+            reply_markup=car_menu(index)
         )
-        await callback.message.edit_media(media, reply_markup=car_menu(index))
 
     elif "_history" in data:
         model = data.split("_")[0]
         await callback.message.edit_caption(
-            caption=history[model]
+            caption=history[model],
+            reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                [InlineKeyboardButton(text="⬅️ Назад", callback_data=f"car_{models.index(model)}")],
+                [InlineKeyboardButton(text="🏠 В меню", callback_data="back")]
+            ])
         )
 
     elif "_specs" in data:
         model = data.split("_")[0]
         await callback.message.edit_caption(
-            caption=specs[model]["text"]
+            caption=specs[model]["text"],
+            reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                [InlineKeyboardButton(text="⬅️ Назад", callback_data=f"car_{models.index(model)}")],
+                [InlineKeyboardButton(text="🏠 В меню", callback_data="back")]
+            ])
         )
 
     elif "_facts" in data:
@@ -181,6 +287,22 @@ async def cb(callback: types.CallbackQuery):
         await callback.message.edit_caption(
             caption=car_facts[model][0],
             reply_markup=car_facts_menu(model, 0)
+        )
+
+    elif data.startswith("carfact_"):
+        _, model, index = data.split("_")
+        index = int(index)
+
+        facts = car_facts[model]
+
+        if index < 0:
+            index = len(facts) - 1
+        elif index >= len(facts):
+            index = 0
+
+        await callback.message.edit_caption(
+            caption=facts[index],
+            reply_markup=car_facts_menu(model, index)
         )
 
 # --- ЗАПУСК ---
