@@ -10,12 +10,14 @@ from aiogram.types import (
 TOKEN = os.environ.get("BOT_TOKEN")
 
 if not TOKEN:
-    raise ValueError("❌ BOT_TOKEN не найден! Добавь его в Railway Variables")
+    raise ValueError("❌ BOT_TOKEN не найден!")
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
 models = ["R32", "R33", "R34", "R35"]
+
+compare_state = {}
 
 car_photos = {
     "R32": "r32.jpg",
@@ -24,7 +26,7 @@ car_photos = {
     "R35": "r35.jpg"
 }
 
-# --- 📜 ПОДРОБНАЯ ИСТОРИЯ ---
+# --- ИСТОРИЯ ---
 history = {
     "R32": (
         "🏎 Nissan Skyline GT-R R32 (1989–1994)\n\n"
@@ -93,7 +95,7 @@ history = {
     )
 }
 
-# --- ⚙️ ХАРАКТЕРИСТИКИ ---
+# --- ХАРАКТЕРИСТИКИ ---
 specs = {
     "R32": {
         "text": (
@@ -155,6 +157,7 @@ specs = {
         )
     }
 }
+
 # --- ФАКТЫ ---
 car_facts = {
     "R32": [
@@ -202,7 +205,7 @@ def car_menu(index):
     return InlineKeyboardMarkup(inline_keyboard=[
         [
             InlineKeyboardButton(text="⬅️", callback_data=f"car_{index-1}"),
-            InlineKeyboardButton(text=f"{model}", callback_data="noop"),
+            InlineKeyboardButton(text=model, callback_data="noop"),
             InlineKeyboardButton(text="➡️", callback_data=f"car_{index+1}")
         ],
         [
@@ -217,13 +220,13 @@ def car_menu(index):
         ]
     ])
 
-def car_facts_menu(model, index):
+def facts_menu(model, index):
     facts = car_facts[model]
     return InlineKeyboardMarkup(inline_keyboard=[
         [
-            InlineKeyboardButton(text="⬅️", callback_data=f"carfact_{model}_{index-1}"),
+            InlineKeyboardButton(text="⬅️", callback_data=f"fact_{model}_{index-1}"),
             InlineKeyboardButton(text=f"{index+1}/{len(facts)}", callback_data="noop"),
-            InlineKeyboardButton(text="➡️", callback_data=f"carfact_{model}_{index+1}")
+            InlineKeyboardButton(text="➡️", callback_data=f"fact_{model}_{index+1}")
         ],
         [
             InlineKeyboardButton(text="⬅️ К машине", callback_data=f"car_{models.index(model)}")
@@ -244,55 +247,61 @@ async def cb(callback: types.CallbackQuery):
     await callback.answer()
     data = callback.data
 
+    # --- В МЕНЮ ---
     if data == "back":
-        await callback.message.edit_text("🚀 Главное меню", reply_markup=main_menu())
+        await callback.message.answer("🚀 Главное меню", reply_markup=main_menu())
 
+    # --- МАШИНЫ ---
     elif data == "cars":
         model = models[0]
-        await callback.message.edit_media(
-            InputMediaPhoto(media=FSInputFile(car_photos[model]), caption=f"🏎 {model}"),
+        await callback.message.answer_photo(
+            FSInputFile(car_photos[model]),
+            caption=f"🏎 {model}",
             reply_markup=car_menu(0)
         )
 
     elif data.startswith("car_"):
         index = int(data.split("_")[1]) % len(models)
         model = models[index]
-        await callback.message.edit_media(
-            InputMediaPhoto(media=FSInputFile(car_photos[model]), caption=f"🏎 {model}"),
+        await callback.message.answer_photo(
+            FSInputFile(car_photos[model]),
+            caption=f"🏎 {model}",
             reply_markup=car_menu(index)
         )
 
+    # --- ИСТОРИЯ ---
     elif "_history" in data:
         model = data.split("_")[0]
-        await callback.message.edit_caption(
-            caption=history[model],
+        await callback.message.answer(
+            history[model],
             reply_markup=InlineKeyboardMarkup(inline_keyboard=[
                 [InlineKeyboardButton(text="⬅️ Назад", callback_data=f"car_{models.index(model)}")],
                 [InlineKeyboardButton(text="🏠 В меню", callback_data="back")]
             ])
         )
 
+    # --- ХАРАКТЕРИСТИКИ ---
     elif "_specs" in data:
         model = data.split("_")[0]
-        await callback.message.edit_caption(
-            caption=specs[model]["text"],
+        await callback.message.answer(
+            specs[model]["text"],
             reply_markup=InlineKeyboardMarkup(inline_keyboard=[
                 [InlineKeyboardButton(text="⬅️ Назад", callback_data=f"car_{models.index(model)}")],
                 [InlineKeyboardButton(text="🏠 В меню", callback_data="back")]
             ])
         )
 
+    # --- ФАКТЫ ---
     elif "_facts" in data:
         model = data.split("_")[0]
-        await callback.message.edit_caption(
-            caption=car_facts[model][0],
-            reply_markup=car_facts_menu(model, 0)
+        await callback.message.answer(
+            car_facts[model][0],
+            reply_markup=facts_menu(model, 0)
         )
 
-    elif data.startswith("carfact_"):
+    elif data.startswith("fact_"):
         _, model, index = data.split("_")
         index = int(index)
-
         facts = car_facts[model]
 
         if index < 0:
@@ -300,9 +309,42 @@ async def cb(callback: types.CallbackQuery):
         elif index >= len(facts):
             index = 0
 
-        await callback.message.edit_caption(
-            caption=facts[index],
-            reply_markup=car_facts_menu(model, index)
+        await callback.message.answer(
+            facts[index],
+            reply_markup=facts_menu(model, index)
+        )
+
+    # --- СРАВНЕНИЕ ---
+    elif data == "compare":
+        await callback.message.answer(
+            "⚖️ Выбери первую машину:",
+            reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                [InlineKeyboardButton(text=m, callback_data=f"c1_{m}") for m in models]
+            ])
+        )
+
+    elif data.startswith("c1_"):
+        m1 = data.split("_")[1]
+        compare_state[callback.from_user.id] = m1
+
+        await callback.message.answer(
+            f"Первая: {m1}\nВыбери вторую:",
+            reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                [InlineKeyboardButton(text=m, callback_data=f"c2_{m}") for m in models]
+            ])
+        )
+
+    elif data.startswith("c2_"):
+        m2 = data.split("_")[1]
+        m1 = compare_state.get(callback.from_user.id)
+
+        text = f"⚖️ {m1} vs {m2}\n\n{specs[m1]['text']}\n\n🆚\n\n{specs[m2]['text']}"
+
+        await callback.message.answer(
+            text,
+            reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                [InlineKeyboardButton(text="🏠 В меню", callback_data="back")]
+            ])
         )
 
 # --- ЗАПУСК ---
